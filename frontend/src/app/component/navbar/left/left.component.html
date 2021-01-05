@@ -1,0 +1,18 @@
+<div id="sidebar">
+    <nav>
+        <ul class="list-unstyled">
+            <li>
+                <a [routerLink]="['/home']">
+                    <i class="fas fa-home"></i>
+                    <span class="ml-3">Home</span>
+                </a>
+            </li>
+            <li>
+                <a (click)="logout()" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="ml-3">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

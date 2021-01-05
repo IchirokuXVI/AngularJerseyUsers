@@ -1,0 +1,41 @@
+$sidebarColor: #444444;
+$linksColor: #333333;
+
+#sidebar {
+    min-height: 100vh;
+    transition: all .10s linear;
+    background-color: #{$sidebarColor};
+    color: #fff;
+    position: relative;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+#sidebar.expanded {
+    width: 100px;
+}
+
+#sidebar li a span {
+    position: absolute;
+    white-space: nowrap;
+}
+
+#sidebar li:hover {
+    color: #904eed;
+    background-color: $linksColor;
+}
+
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    display: block;
+}
+
+#logout:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,82 @@
+<h4>Account information</h4>
+<form [formGroup]="frm" class="border-bottom pb-3" (submit)="updateUserInfo(frm)">
+  <div class="row">
+    <div class="col-lg-1 col-12 order-lg-1 order-2 mt-lg-0 mt-3">
+      <button type="button" (click)="toggleEdit()"
+        class="btn btn-block {{ unlocked ? 'alert-danger' : 'alert-primary' }} btn-sm"
+        id="toggleEdit">{{ unlocked ? 'Cancel' : 'Edit' }}</button>
+      <button type="submit" class="btn btn-block alert-success btn-sm {{ unlocked ? '' : 'd-none' }}"
+        id="saveUser">Save</button>
+    </div>
+    <div class="col-lg-11 mt-lg-0 mt-3 order-lg-2 order-1">
+      <div class="row">
+        <div class="col-lg-3 col-12">
+          <label for="usernameInput" class="text-secondary d-block">Username</label>
+          <input class="form-control {{ unlocked ? '' : 'd-none' }}" formControlName="newUsername" type="text" id="usernameInput">
+          <span class="{{ !unlocked ? '' : 'd-none' }}">{{ user.username }}</span>
+          <span class="invalid-feedback" role="alert">
+              <strong>Username already taken</strong>
+          </span>
+        </div>
+        <div class="col-lg-3 col-12">
+          <label for="passwordInput" class="text-secondary d-block">Password{{ unlocked ? ' (*)' : '' }}</label>
+          <input class="form-control {{ unlocked ? '' : 'd-none' }} {{ frm.get('password').invalid && frm.get('password').touched ? 'is-invalid' : '' }}" formControlName="password" name="password" id="passwordInput" type="password"
+            placeholder="Current password">
+          <span class="invalid-feedback" role="alert" id="passwordError">
+              <strong>Password is required to edit your account</strong>
+          </span>
+          <span class="{{ !unlocked ? '' : 'd-none' }}">******</span>
+        </div>
+        <div class="col-lg-3 col-12 {{ unlocked ? '' : 'd-none' }}">
+          <label for="newPassword" class="text-secondary">New password</label>
+          <input class="form-control" formControlName="newPassword" type="password" id="newPassword" placeholder="New password">
+        </div>
+
+        <div class="col-lg-3 col-12 {{ unlocked ? '' : 'd-none' }}">
+          <label for="passwordConfirm" class="text-secondary">Confirm password</label>
+          <input class="form-control {{ frm.get('passwordConfirm').invalid && frm.get('passwordConfirm').dirty ? 'is-invalid' : '' }}" formControlName="passwordConfirm" type="password" id="passwordConfirm"
+            placeholder="Confirm password">
+          <span class="invalid-feedback" role="alert">
+              <strong>Passwords doesn't match</strong>
+          </span>
+        </div>
+      </div>
+      <!-- 2 colums (first one with username, password and second one with password change inputs) -->
+      <!-- <div class="row {{ unlocked ? '' : 'd-none' }}">
+        <div class="col-lg-6 col-12">
+            <label for="password" class="text-secondary">New password</label>
+            <input class="form-control" type="password" name="password" id="password" placeholder="New password">
+        </div>
+
+        <div class="col-lg-6 col-12">
+            <label for="password_confirmation" class="text-secondary">Confirm password</label>
+            <input class="form-control" type="password" name="password_confirmation" id="password_confirmation"
+            placeholder="Confirm password">
+        </div>
+      </div> -->
+    </div>
+  </div>
+</form>
+<h4 class="mt-3">Account design options</h4>
+<form *ngIf="optionsFrm" [formGroup]="optionsFrm" (change)="updateUserOptions(optionsFrm)">
+  <div class="row" formArrayName="options">
+    <div *ngFor="let option of options; index as i; let last = last" class="col-xl-4 col-lg-6 col-12 border-right">
+      <div class="form-group row">
+        <div class="col-10">
+            <label for="{{ removeWhiteSpace(option.name) }}">
+                    {{ option.name }}
+            </label>
+        </div>
+        <div class="col-2 text-md-center text-right">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" [formControlName]="i" (change)="checkboxChange(option.id)" id="{{ removeWhiteSpace(option.name) }}">
+                <label class="custom-control-label" for="{{ removeWhiteSpace(option.name) }}"></label>
+            </div>
+        </div>
+        <div class="col-md-12 text-muted text-justify">
+              {{ option.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
