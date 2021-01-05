@@ -1,0 +1,8 @@
+<div class="container-fluid min-vh-100" style="{{ checkOption('Dark mode') ? 'background-color:  #333330; color: white' : '' }}">
+    <div class="row">
+        <div *ngIf="user && !checkOption('Top navbar')" app-left id="navbarContainer" class="{{ checkOption('Sticky navbar') ? 'position-sticky' : 'position-absolute' }}"></div>
+        <div id="main" class="mx-auto {{ user ? 'col-10' : 'col-12' }}">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
