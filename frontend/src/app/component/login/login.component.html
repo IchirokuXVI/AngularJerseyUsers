@@ -34,9 +34,9 @@
           <form [formGroup]="form" (ngSubmit)="sendForm(form)">
             <div class="form-group">
               <label>Username</label>
-              <input type="text" style="{{ checkOption('Dark mode') ? 'background-color: #dedede' : ''}}" formControlName="username" class="form-control" placeholder="Username" />
-              <div class="text-danger" id="usernameError">
-
+              <input type="text" id="usernameInput" style="{{ checkOption('Dark mode') ? 'background-color: #dedede' : ''}}" formControlName="username" class="form-control" placeholder="Username" />
+              <div class="invalid-feedback" role="alert">
+                Username already taken
               </div>
               <!-- <div *ngIf="loginForm.get('username').hasError('required')" class="text-danger">
                 Username is required
@@ -53,9 +53,9 @@
 
             <div *ngIf="!login" class="form-group">
               <label>Confirm password</label>
-              <input type="password" style="{{ checkOption('Dark mode') ? 'background-color: #dedede' : ''}}" class="form-control" placeholder="Confirm password" id="confirmPassword" />
-              <div class="text-danger" id="confirmPasswordError">
-                
+              <input type="password" formControlName="passwordConfirm" style="{{ checkOption('Dark mode') ? 'background-color: #dedede' : ''}}" class="form-control {{ form.get('passwordConfirm').invalid && form.get('passwordConfirm').dirty ? 'is-invalid' : '' }}" placeholder="Confirm password" />
+              <div class="invalid-feedback" role="alert">
+                Passwords doesn't match
               </div>
             </div>
 

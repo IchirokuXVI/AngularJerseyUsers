@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
+import { CustomValidators } from 'src/app/util/CustomValidators';
 
 @Component({
   selector: 'div[app-login]',
@@ -16,16 +17,24 @@ export class LoginComponent implements OnInit {
 
   constructor(private _authServ: AuthService,
               private _userServ: UserService,
-              protected router: Router) {
+              private router: Router,
+              private frmBuilder: FormBuilder) {
     this.form = new FormGroup ({
       username: new FormControl('', {
         validators: Validators.required,
         updateOn: 'submit'
       }),
       password: new FormControl('', {
-        validators: Validators.required,
-        updateOn: 'submit'
+        validators: Validators.required
       })
+    });
+
+    // Confirm password input won't be invalid/valid if you first fill confirm and then password so
+    // this way we are forcing it to re-evalidate when password changes
+    this.form.controls.password.valueChanges.subscribe(() => {
+      if (!this.login) {
+        this.form.controls.passwordConfirm.updateValueAndValidity();
+      }
     });
   }
 
@@ -44,27 +53,33 @@ export class LoginComponent implements OnInit {
           }
         );
       } else {
-        if ($('#password').val() === $('#confirmPassword').val()) {
-          $('#confirmPasswordError').text("");
-          this._userServ.register(form.value).subscribe(
-            resp => {
-                $('#formMessage').text("User successfully created");
-                $('#usernameError').text("");
-                this.login = true;
-            }, err => {
-              $('#usernameError').text("Username already taken");
-          });
-        } else {
-          $('#confirmPasswordError').text("Passwords doesn't match");
-        }
+        $('#confirmPasswordError').text("");
+        this._userServ.register(form.value).subscribe(
+          resp => {
+              $('#formMessage').text("User successfully created");
+              $('.is-invalid').removeClass('is-invalid');
+              this.form.removeControl("passwordConfirm");
+              this.login = true;
+          }, err => {
+            $('#usernameInput').addClass("is-invalid");
+        });
       }
     }
   }
 
   public secondButtonClick(): void {
     this.login = !this.login;
+    if (!this.login) {
+      this.form.addControl("passwordConfirm", new FormControl('', {
+          validators: CustomValidators.matchValues('password'),
+          updateOn: 'change'
+        })
+      )
+    } else {
+      this.form.removeControl("passwordConfirm");
+    }
+    this.form.reset();
     $('#formError').text("");
-    $('#usernameError').text("");
     $('#formMessage').text("");
   }
 
