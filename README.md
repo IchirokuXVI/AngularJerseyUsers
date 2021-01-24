@@ -3,6 +3,10 @@ This is a simple web application made with Angular and Jersey
 
 It has user login with access and refresh tokens, profile editing (username, password) and a few options to customize the webpage design that are saved on the user.
 
+Video showing the page (in spanish)
+
+https://youtu.be/Uml7hxPxi68
+
 If you want to run it on your server there is a .sql file in the backend folder. This webpage was developed using Jersey 2.32 in Tomcat 9.0.41 and Angular 10.1.6 in XAMPP 7.4.6.
 
 Known errors:
